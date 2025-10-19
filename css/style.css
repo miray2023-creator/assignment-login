@@ -1,0 +1,37 @@
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+      font-family: "Titillium Web", sans-serif;
+}
+.bg-blue{
+    background: #24353f;
+    height: 100vh;
+}
+h1{
+    color:  #17a2b8;
+}
+.bg-form {
+    box-shadow: -5px 2px 54px -9px rgba(0, 0, 0, 1);
+}
+.sign {
+  position: relative;
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+}
+
+.sign::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: white;
+  transition: 0.1s;
+}
+
+.sign:hover::after {
+  width: 100%;
+}
