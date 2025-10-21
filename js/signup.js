@@ -1,27 +1,19 @@
-// Get form inputs
-var nameInput = document.getElementById("signinName");
-var emailInput = document.getElementById("signinEmail");
-var passInput = document.getElementById("signinPassword");
-var signUpBtn = document.getElementById("signupBtn");
+// ---------- SIGN UP FUNCTION ----------
+function signup(event) {
+  if (event && event.preventDefault) event.preventDefault();
 
-// Get stored users or start an empty list
-var users = JSON.parse(localStorage.getItem("users")) || [];
-
-// Function runs when user clicks "Sign Up"
-function signUp() {
-  event.preventDefault(); // prevent form reload
-
-  var name = nameInput.value.trim();
-  var email = emailInput.value.trim().toLowerCase();
-  var password = passInput.value.trim();
+  var name = document.getElementById("signupName")?.value.trim();
+  var email = document.getElementById("signupEmail")?.value.trim().toLowerCase();
+  var password = document.getElementById("signupPassword")?.value.trim();
 
   // Basic validation
-  if (name === "" || email === "" || password === "") {
+  if (!name || !email || !password) {
     alert("Please fill all fields");
     return;
   }
 
-  if (!validateEmail(email)) {
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) {
     alert("Please enter a valid email address");
     return;
   }
@@ -31,7 +23,8 @@ function signUp() {
     return;
   }
 
-  // Check if user already exists
+  var users = JSON.parse(localStorage.getItem("users")) || [];
+
   var exists = users.some(function (u) {
     return u.email === email;
   });
@@ -41,32 +34,43 @@ function signUp() {
     return;
   }
 
-  // Create and save new user
-  var newUser = {
-    name: name,
-    email: email,
-    password: password
-  };
-
+  var newUser = { name: name, email: email, password: password };
   users.push(newUser);
   localStorage.setItem("users", JSON.stringify(users));
 
-  alert("Account created successfully! You can now sign in.");
-  clearForm();
-
-  // Redirect to login page (index.html)
+  alert("Account created successfully! Please log in.");
   window.location.href = "index.html";
 }
 
-// Helper function to check valid email
-function validateEmail(email) {
-  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
+
+// ---------- LOGIN FUNCTION ----------
+function login() {
+  var email = document.getElementById("signinEmail").value.trim().toLowerCase();
+  var password = document.getElementById("signinPassword").value.trim();
+
+  if (!email || !password) {
+    alert("Please enter both email and password");
+    return;
+  }
+
+  var users = JSON.parse(localStorage.getItem("users")) || [];
+
+  var found = users.find(function (u) {
+    return u.email === email && u.password === password;
+  });
+
+  if (found) {
+    localStorage.setItem("currentUser", JSON.stringify(found));
+    alert("Welcome " + found.name + "!");
+    window.location.href = "welcome.html";
+  } else {
+    alert("Invalid email or password");
+  }
 }
 
-// Clear form after success
-function clearForm() {
-  nameInput.value = "";
-  emailInput.value = "";
-  passInput.value = "";
+
+// ---------- LOGOUT FUNCTION ----------
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
 }

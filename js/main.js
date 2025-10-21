@@ -1,6 +1,6 @@
-// ---------- SIGNUP ----------
+
 function signup(event) {
-  // avoid form submit reload if button inside a form
+
   if (event && event.preventDefault) event.preventDefault();
 
   var name = document.getElementById("signupName").value.trim();
@@ -13,7 +13,7 @@ function signup(event) {
     return;
   }
 
-  // basic email check
+
   var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRe.test(email)) {
     alert("Please enter a valid email address");
@@ -25,10 +25,10 @@ function signup(event) {
     return;
   }
 
-  // load users from localStorage or empty array
+
   var users = JSON.parse(localStorage.getItem("users")) || [];
 
-  // check duplicate email
+
   var exists = users.some(function(u) { return u.email === email; });
   if (exists) {
     alert("This email is already registered");
@@ -45,7 +45,7 @@ function signup(event) {
   window.location.href = "index.html";
 }
 
-// Expose to global in case script executes in module-like env
+
 window.signup = signup;
 
 
@@ -69,7 +69,7 @@ function login(event) {
 
   if (found) {
     localStorage.setItem("currentUser", JSON.stringify(found));
-    // go to welcome page
+ 
     window.location.href = "home.html";
   } else {
     alert("Invalid email or password");
